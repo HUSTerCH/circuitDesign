@@ -104,7 +104,7 @@ $$
 
 - 调整电位器$R_P$，使$V_D$为5~6V
 
-- 再测出电路的$V_G$（栅极对地电压）和$V_S$（源极对地电压），填入表3.3.2中，并计算静态工作点Q（$I_{DQ}、V_{GSQ}、V_{DSQ}）。
+- 再测出电路的$V_G$（栅极对地电压）和$V_S$（源极对地电压），填入表3.3.2中，并计算静态工作点Q（$I_{DQ}$、$V_{GSQ}$、$V_{DSQ}$）。
 
 ![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E8%A1%A83.3.2.png)
 
