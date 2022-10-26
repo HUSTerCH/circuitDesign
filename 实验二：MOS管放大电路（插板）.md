@@ -26,7 +26,7 @@ MOS管放大电路
 
 ## 实验原理
 
-#### MOSFET共源极放大电路
+### MOSFET共源极放大电路
 
 ![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86_%E5%85%B1%E6%BA%90%E6%9E%81%E6%94%BE%E5%A4%A7%E7%94%B5%E8%B7%AF.png)
 
