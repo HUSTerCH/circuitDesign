@@ -8,7 +8,7 @@
 
 ## 实验名称
 
-MOS管放大电路
+MOS管放大电路（插板）
 
 ## 实验目的
 
@@ -22,7 +22,7 @@ MOS管放大电路
 
 ## 实验元器件
 
-***MOSFET晶体管：2N7000；电阻：1kΩ，5.1kΩ，100kΩ，39kΩ，200kΩ；电容：1μF，4.7μF，47μF***
+***MOSFET晶体管：2N7000；电阻：1kΩ，5.1kΩ，100kΩ；电容：1μF，4.7μF，47μF；电位器：470k，100k，100***
 
 ## 实验原理
 
@@ -75,7 +75,7 @@ $$
 而(3.3.4)第一式中的$g_m$是电路静态工作点下MOS管的互导，同样由式子
 
 $$
-r_ds=\frac{∂v_{DS}}{∂i_D}|_{V_{GS}}
+r_{ds}=\frac{∂v_{DS}}{∂i_D}|_{V_{GS}}
 $$
 
 可得
@@ -184,20 +184,146 @@ $$
   
   ![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E8%A1%A83.3.5.png)
 
-## 实验过程
+## 实验记录
 
 ### 一、测试静态工作点
 
+表3.3.2记录如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E8%A1%A83.3.2_%E8%AE%B0%E5%BD%95.png)
+
 ### 二、测试放大电路的输入、输出波形和通带电压增益
+
+示波器图示如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BA%8C%E3%80%81%E8%B4%9F%E8%BD%BD%E5%BC%80%E8%B7%AF.PNG)
+
+$$
+无RL（负载开路）
+$$
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BA%8C%E3%80%81%E8%B4%9F%E8%BD%BDRL%3D5.1k.PNG)
+
+$$
+负载RL=5.1kΩ
+$$
+
+表3.3.3记录如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E8%A1%A83.3.3_%E8%AE%B0%E5%BD%95.png)
 
 ### 三、测试放大电路的输入电阻
 
+实验测量示波器图示如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%B8%89%E3%80%81R%E6%8E%A5.PNG)
+
+$$
+接入R=51kΩ
+$$
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%B8%89%E3%80%81R%E6%9C%AA%E6%8E%A5.PNG)
+
+$$
+不接R
+$$
+
+由
+
+$$
+R_i=\frac{v_{o2}}{v_{o1}-v_{o2}}R
+$$
+
+有
+
+$$
+R_i=\frac{313.9}{520.1-313.9}×51k=77.6377k
+$$
+
+又
+
+理论值$R_i$=($R_{g1}$+$R_p$)//$R_{g2}$=**76.3467k**
+
+则相对误差为
+
+$$
+\frac{77.6377-76.3467}{76.3467}=1.691\%
+$$
+
 ### 四、 测试放大电路的输出电阻
+
+实验示波器测量图示如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E5%9B%9B%E3%80%81%E6%9C%89RL.PNG)
+
+$$
+有RL
+$$
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E5%9B%9B%E3%80%81%E6%97%A0RL.PNG)
+
+$$
+无RL
+$$
+
+由
+
+$$
+R_o=\frac{v'_o-v_o}{v'_o}×R_L
+$$
+
+有
+
+$$
+R_o=\frac{984.0-520.1}{984.0}×5.1k=2.4044k
+$$
 
 ### 五、测试放大电路的通频带
 
+实验示波器测量图示如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BA%94%E3%80%811kHz_984.PNG)
+
+$$
+1kHz,v_{opp}=984.0mV
+$$
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BA%94%E3%80%8126hz_696.PNG)
+
+$$
+26Hz,v_{opp}=696.0mV
+$$
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BA%94%E3%80%81700kHz_696.PNG)
+
+$$
+700kHz,v_{opp}=696.1mV
+$$
+
+实验记录表3.3.4如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E8%A1%A83.3.4_%E8%AE%B0%E5%BD%95.png)
+
 ### 六、观察失真波形
+
+实验示波器测量图示如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E5%85%AD%E3%80%81%E5%A4%B1%E7%9C%9F%E6%88%AA%E6%AD%A2.PNG)
+
+$$
+截止失真
+$$
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E5%85%AD%E3%80%81%E5%A4%B1%E7%9C%9F%E9%A5%B1%E5%92%8C.PNG)
+
+$$
+饱和失真
+$$
+
+实验记录表3.3.5如下
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E8%A1%A83.3.5_%E8%AE%B0%E5%BD%95.png)
 
 ## 实验小结
 
-这次实验增强了我对MOSFET的理解，亲身学习并调试出了两种失真波形，复习并更好的理解了模电的知识。
+这次实验增强了我对MOSFET的理解，亲身学习并调试出了两种失真波形，复习并更好的理解了模电的知识,实验过程中发现理解实验原理，掌握MOS管的工作原理和相关计算方法以及相关仪器的使用方法至关重要。
