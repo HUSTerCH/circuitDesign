@@ -1,0 +1,19 @@
+** Profile: "SCHEMATIC1-MSOFET_Sim"  [ D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\MOSFET-PSpiceFiles\SCHEMATIC1\MSOFET_Sim.sim ] 
+
+** Creating circuit file "MSOFET_Sim.cir" 
+** WARNING: THIS AUTOMATICALLY GENERATED FILE MAY BE OVERWRITTEN BY SUBSEQUENT SIMULATIONS
+
+*Libraries: 
+* Profile Libraries :
+* Local Libraries :
+* From [PSPICE NETLIST] section of D:\SPB_data\cdssetup\OrCAD_PSpice/16.6.0/PSpice.ini file:
+.lib "nomd.lib" 
+
+*Analysis directives: 
+.OP
+.OPTIONS ADVCONV
+.PROBE64 V(alias(*)) I(alias(*)) W(alias(*)) D(alias(*)) NOISE(alias(*)) 
+.INC "..\SCHEMATIC1.net" 
+
+
+.END

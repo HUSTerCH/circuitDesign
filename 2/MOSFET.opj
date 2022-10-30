@@ -1,0 +1,106 @@
+(ExpressProject "MOSFET"
+  (ProjectVersion "19981106")
+  (ProjectType "Analog or A/D Mixed Mode")
+  (Folder "Design Resources"
+    (Folder "Library"
+      (File ".\mosfet.olb"
+        (Type "Schematic Library")))
+    (NoModify)
+    (File ".\mosfet.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (PSPICE_Regenerate_Netlist_Flag "FALSE"))
+  (Folder "Outputs"
+    (File ".\mosfet-pspicefiles\schematic1\schematic1.net"
+      (Type "Report")))
+  (Folder "PSpice Resources"
+    (Folder "Simulation Profiles"
+      (File.PSpice.{09528990-3187-11D2-BC7B-00A0C90CBF91}
+         ".\mosfet-pspicefiles\schematic1\mosfet_sim.sim"
+        (DisplayName "SCHEMATIC1-MOSFET_Sim")
+        (Type "PSpice Profile"))
+      (File.PSpice.{09528990-3187-11D2-BC7B-00A0C90CBF91}
+         ".\mosfet-pspicefiles\schematic1\msofet_sim.sim"
+        (DisplayName "SCHEMATIC1-MSOFET_Sim")
+        (Type "PSpice Profile"))
+      (File.PSpice.{09528990-3187-11D2-BC7B-00A0C90CBF91}
+         ".\mosfet-pspicefiles\schematic1\mosfet_sim1.sim"
+        (DisplayName "SCHEMATIC1-MOSFET_SIM1")
+        (Type "PSpice Profile"))
+      (ActiveProfile ".\mosfet-pspicefiles\schematic1\mosfet_tran.sim")
+      (File.PSpice.{09528990-3187-11D2-BC7B-00A0C90CBF91}
+         ".\mosfet-pspicefiles\schematic1\mosfet_tran.sim"
+        (DisplayName "SCHEMATIC1-MOSFET_TRAN")
+        (Type "PSpice Profile")))
+    (Folder "Model Libraries"
+      (Sort User)
+      (File "D:\OrCAD\OrCAD_16.6_Lite\tools\pspice\library\pwrmos.lib"
+        (Type "PSpiceLibrary")
+        (DisplayName "D:\OrCAD\OrCAD_16.6_Lite\tools\pspice\library\pwrmos.lib")))
+    (Folder "Stimulus Files"
+      (Sort User))
+    (Folder "Include Files"
+      (Sort User)))
+  (DefaultLibraryBrowseDirectory "library\PSpice")
+  (PartMRUSelector
+    (R
+      (FullPartName "R.Normal")
+      (LibraryName
+         "D:\ORCAD\ORCAD_16.6_LITE\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (R_var
+      (FullPartName "R_var.Normal")
+      (LibraryName
+         "D:\ORCAD\ORCAD_16.6_LITE\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (C
+      (FullPartName "C.Normal")
+      (LibraryName
+         "D:\ORCAD\ORCAD_16.6_LITE\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (VSIN
+      (FullPartName "VSIN.Normal")
+      (LibraryName
+         "D:\ORCAD\ORCAD_16.6_LITE\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (VDC
+      (FullPartName "VDC.Normal")
+      (LibraryName
+         "D:\ORCAD\ORCAD_16.6_LITE\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (0
+      (LibraryName "D:\ORCAD\ORCAD_16.6_LITE\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (2N7000
+      (FullPartName "2N7000.Normal")
+      (LibraryName
+         "D:\ORCAD\ORCAD_16.6_LITE\TOOLS\CAPTURE\LIBRARY\PSPICE\PWRMOS.OLB")
+      (DeviceIndex "0")))
+  (LastUsedLibraryBrowseDirectory
+     "D:\OrCAD\OrCAD_16.6_Lite\tools\capture\library\pspice")
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" "Library")
+      (Path "Outputs")
+      (Select "Design Resources"
+         "D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\mosfet.dsn"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 0 200 0 359"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -31 105 1347 8 406")
+        (Scroll "404 138")
+        (Zoom "200")
+        (Occurrence "/"))
+      (Path
+         "D:\DESKTOP\STUDYANDWORK\CIRCUITDESGIN\CIRCUITDESIGNEXPERIMENT_LC\2\MOSFET.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "PAGE1")))
+  (MPSSessionName "³©ÏëÎ´À´"))

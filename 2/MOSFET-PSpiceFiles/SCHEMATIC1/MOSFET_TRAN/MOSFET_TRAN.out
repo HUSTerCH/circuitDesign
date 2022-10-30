@@ -1,0 +1,154 @@
+
+**** 10/28/22 16:05:52 ****** PSpice Lite (October 2012) ****** ID# 10813 ****
+
+ ** Profile: "SCHEMATIC1-MOSFET_TRAN"  [ D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\MOSFET-PSpiceFiles\SCHEMA
+
+
+ ****     CIRCUIT DESCRIPTION
+
+
+******************************************************************************
+
+
+
+
+** Creating circuit file "MOSFET_TRAN.cir" 
+** WARNING: THIS AUTOMATICALLY GENERATED FILE MAY BE OVERWRITTEN BY SUBSEQUENT SIMULATIONS
+
+*Libraries: 
+* Profile Libraries :
+* Local Libraries :
+.LIB "D:/OrCAD/OrCAD_16.6_Lite/tools/pspice/library/pwrmos.lib" 
+* From [PSPICE NETLIST] section of D:\SPB_data\cdssetup\OrCAD_PSpice/16.6.0/PSpice.ini file:
+.lib "nomd.lib" 
+
+*Analysis directives: 
+.TRAN  0 4ms 0 1us 
+.OPTIONS ADVCONV
+.PROBE64 V(alias(*)) I(alias(*)) W(alias(*)) D(alias(*)) NOISE(alias(*)) 
+.INC "..\SCHEMATIC1.net" 
+
+
+
+**** INCLUDING SCHEMATIC1.net ****
+* source MOSFET
+M_T         N00185 N00493 N000400 N000400 M2N7000
+R_Rs1         0 N00256  1k TC=0,0 
+R_RL         0 N00216  5.1k TC=0,0 
+C_C2         N00185 N00216  4.7uF  TC=0,0 
+C_C3         0 N00256  47uF  TC=0,0 
+V_V1         N00435 0 12Vdc
+R_Rg2         0 N00493  100k TC=0,0 
+R_Rg1         N00493 N00972  100k TC=0,0 
+V_Vi         N00658 0  
++SIN 0 30mv 1kHz 0 0 0
+C_C1         N00658 N00493  1uF  TC=0,0 
+R_Rd         N00185 N00435  5.1k TC=0,0 
+R_Rp         N00972 N00435 {470k*0.5+.001}
+R_Rs2         N00256 N000400  51 TC=0,0 
+
+**** RESUMING MOSFET_TRAN.cir ****
+.END
+
+**** 10/28/22 16:05:52 ****** PSpice Lite (October 2012) ****** ID# 10813 ****
+
+ ** Profile: "SCHEMATIC1-MOSFET_TRAN"  [ D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\MOSFET-PSpiceFiles\SCHEMA
+
+
+ ****     MOSFET MODEL PARAMETERS
+
+
+******************************************************************************
+
+
+
+
+               M2N7000         
+               NMOS            
+       LEVEL    3            
+           L    2.000000E-06 
+           W     .12         
+         VTO    1.73         
+          KP    1.073000E-06 
+       GAMMA    0            
+         PHI     .6          
+      LAMBDA    0            
+          RD     .5489       
+          RS     .02         
+          RG  546.2          
+          RB    1.000000E-03 
+         RDS   48.000000E+06 
+          IS   10.000000E-15 
+          JS    0            
+          PB     .8          
+        PBSW     .8          
+         CBD   74.460000E-12 
+          CJ    0            
+        CJSW    0            
+        CGSO   73.610000E-12 
+        CGDO    6.487000E-12 
+        CGBO    0            
+         TOX    2.000000E-06 
+          XJ    0            
+       UCRIT   10.000000E+03 
+       DELTA    0            
+         ETA    0            
+      DIOMOD    1            
+         VFB    0            
+        LETA    0            
+        WETA    0            
+          U0    0            
+        TEMP    0            
+         VDD    5            
+       XPART    0            
+
+
+**** 10/28/22 16:05:52 ****** PSpice Lite (October 2012) ****** ID# 10813 ****
+
+ ** Profile: "SCHEMATIC1-MOSFET_TRAN"  [ D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\MOSFET-PSpiceFiles\SCHEMA
+
+
+ ****     INITIAL TRANSIENT SOLUTION       TEMPERATURE =   27.000 DEG C
+
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(N00185)    7.7860 (N00216)    0.0000 (N00256)     .8263 (N00435)   12.0000     
+
+(N00493)    2.7586 (N00658)    0.0000 (N00972)    5.5172 (N000400)     .8684    
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V_V1        -8.539E-04
+    V_Vi         0.000E+00
+
+    TOTAL POWER DISSIPATION   1.02E-02  WATTS
+
+
+
+          JOB CONCLUDED
+
+**** 10/28/22 16:05:52 ****** PSpice Lite (October 2012) ****** ID# 10813 ****
+
+ ** Profile: "SCHEMATIC1-MOSFET_TRAN"  [ D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\MOSFET-PSpiceFiles\SCHEMA
+
+
+ ****     JOB STATISTICS SUMMARY
+
+
+******************************************************************************
+
+
+
+  License check-out time            =       16.47
+  Total job time (using Solver 1)   =         .11
+

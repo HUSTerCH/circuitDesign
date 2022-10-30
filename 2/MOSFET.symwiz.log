@@ -1,0 +1,13 @@
+STATUS: PSpice Model Import Wizard for "Capture" (16.6.0.d001)
+STATUS:  
+   INFO: LIB driven flow
+   INFO: Input File: D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\MOSFET.lib
+   INFO: Output File: D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\MOSFET.OLB
+STATUS:  
+STATUS: Identifying matching symbols automatically...started at Friday, October 28, 2022 15:10:21
+STATUS:  
+   INFO: Symbol "M2n7000" already exists for model "M2n7000".
+STATUS:  
+STATUS: Completed identifying matching symbols automatically...at Friday, October 28, 2022 15:10:22
+STATUS:  
+STATUS: 0 Error messages, 0 Warning messages

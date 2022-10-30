@@ -1,0 +1,7 @@
+STATUS: PSpice Schematics to Capture translator (16.6.0.d001)
+STATUS:  
+STATUS: Translator started at Friday, October 28, 2022 15:10:21
+INFO(ORSCH-1029): Using existing library 'D:\OrCAD\OrCAD_16.6_Lite\tools\Capture\Library\PSpice\modeled.etc'.
+INFO(ORSCH-1029): Using existing library 'D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\MOSFET.olb'.
+STATUS: Translator stopped at Friday, October 28, 2022 15:10:29
+STATUS: 0 Error messages, 0 Warning messages
