@@ -1,15 +1,15 @@
 * source MOSFET
 M_T         N00185 N00493 N000400 N000400 M2N7000
 R_Rs1         0 N00256  1k TC=0,0 
-R_RL         0 N00216  5.1k TC=0,0 
-C_C2         N00185 N00216  4.7uF  TC=0,0 
+R_RL         0 VO  5.1k TC=0,0 
+C_C2         N00185 VO  4.7uF  TC=0,0 
 C_C3         0 N00256  47uF  TC=0,0 
 V_V1         N00435 0 12Vdc
 R_Rg2         0 N00493  100k TC=0,0 
 R_Rg1         N00493 N00972  100k TC=0,0 
-V_Vi         N00658 0  
-+SIN 0 30mv 1kHz 0 0 0
+V_Vi         N00658 0  AC 15mV
++SIN 0 300mV 1kHz 0 0 0
 C_C1         N00658 N00493  1uF  TC=0,0 
 R_Rd         N00185 N00435  5.1k TC=0,0 
-R_Rp         N00972 N00435 {470k*0.5+.001}
+R_Rp         N00972 N00435 {500k*0.5+.001}
 R_Rs2         N00256 N000400  51 TC=0,0 

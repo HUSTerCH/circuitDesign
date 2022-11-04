@@ -83,9 +83,7 @@
     (FileView
       (Path "Design Resources")
       (Path "Design Resources" "Library")
-      (Path "Outputs")
-      (Select "Design Resources"
-         "D:\Desktop\StudyAndWork\circuitDesgin\CircuitDesignExperiment_lc\2\mosfet.dsn"))
+      (Path "Outputs"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
@@ -96,8 +94,8 @@
       (Type "COrSchematicDoc")
       (Frame
         (Placement "44 2 3 -1 -1 -8 -31 105 1347 8 406")
-        (Scroll "404 138")
-        (Zoom "200")
+        (Scroll "54 0")
+        (Zoom "150")
         (Occurrence "/"))
       (Path
          "D:\DESKTOP\STUDYANDWORK\CIRCUITDESGIN\CIRCUITDESIGNEXPERIMENT_LC\2\MOSFET.DSN")

@@ -116,6 +116,84 @@ $$
 
 ## 实验记录
 
+### 电路图&静态工作点
+
+仿真分析 静态工作点 电路如图所示  
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%94%B5%E8%B7%AF_%E9%9D%99%E6%80%81%E5%B7%A5%E4%BD%9C%E7%82%B9.png)
+
+数据如下：
+
+<img src="https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E6%95%B0%E6%8D%AE_%E9%9D%99%E6%80%81%E5%B7%A5%E4%BD%9C%E7%82%B9.png" title="" alt="" width="225">
+
+电路工作在饱和区，符合条件
+
+静态工作点：
+
+$V_{GSQ}$=1.92V
+
+$V_{DSQ}$=4.53V
+
+$I_{DQ}$=1.21mA
+
+### 输入输出波形/电压增益
+
+仿真实验 输入波形如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%BB%98%E5%9B%BE_vi.png)
+
+输出波形如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%BB%98%E5%9B%BE_%E5%BC%80%E8%B7%AF_vo.png)
+
+**电压增益为$A_v$=1159.4/29.995=38.67**
+
+### 幅频响应曲线
+
+仿真实验 幅频响应曲线如下：
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%BB%98%E5%9B%BE_%E5%B9%85%E9%A2%91%E5%93%8D%E5%BA%94%E6%9B%B2%E7%BA%BF.png)
+
+则可以得到：
+
+- 中频增益 $A_v$=31.804dB=38.922>10 符合要求
+
+- 上限频率 $f_H$=1.44MHz>100kHz 符合要求
+
+- 下限频率 $f_L$=29.139Hz<100Hz 符合要求
+
+### 相频响应曲线
+
+仿真实验 相频响应曲线
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%BB%98%E5%9B%BE_%E7%9B%B8%E9%A2%91%E5%93%8D%E5%BA%94%E6%9B%B2%E7%BA%BF.png)
+
+### 输入电阻响应曲线
+
+仿真实验 输入电阻响应曲线
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%BB%98%E5%9B%BE_%E8%BE%93%E5%85%A5%E7%94%B5%E9%98%BB%E9%A2%91%E7%8E%87%E5%93%8D%E5%BA%94.png)
+
+可得$R_i$=73.357kΩ>51kΩ 符合要求
+
+### 输出电阻响应曲线
+
+仿真实验 输出电阻频率响应曲线
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%BB%98%E5%9B%BE_%E8%BE%93%E5%87%BA%E7%94%B5%E9%98%BB%E9%A2%91%E7%8E%87%E5%93%8D%E5%BA%94.png)
+
+可得$R_o$=5.0997kΩ<5.1kΩ 符合要求
+
+### 非线性失真现象
+
+仿真实验 非线性失真 截止失真现象
+
+![Base/仿真_绘图_截止失真.png at master · HUSTerCH/Base · GitHub](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%BB%98%E5%9B%BE_%E6%88%AA%E6%AD%A2%E5%A4%B1%E7%9C%9F.png)
+
+仿真实验 非线性失真 饱和失真现象
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/ex2/%E4%BB%BF%E7%9C%9F_%E7%BB%98%E5%9B%BE_%E9%A5%B1%E5%92%8C%E5%A4%B1%E7%9C%9F.png)
+
 ## 实验小结
 
 - 本次实验经历各种各样的波折，如调不出失真曲线、误用示波器测量静态工作点等，在经过不断的调试和重做之后，最终顺利完成了实验。
