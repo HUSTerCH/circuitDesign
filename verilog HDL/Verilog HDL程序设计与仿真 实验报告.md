@@ -33,38 +33,37 @@ output reg [2:0] Y;
 output reg GS,EO;
 
 always @(*) 
-	begin
-		if (EI==0) 
-			begin
-				Y[2:0] = 3'b000;
+    begin
+        if (EI==0) 
+            begin
+                Y[2:0] = 3'b000;
 
-				GS = 0;
-				EO = 0;
-			end
-		else
-			begin
-				GS = 1;
-				EO = 0;
-				casex(I[7:0])
-					8'b1xxx_xxxx : Y[2:0] = 3'b111;
-					8'b01xx_xxxx : Y[2:0] = 3'b110;
-					8'b001x_xxxx : Y[2:0] = 3'b101;
-					8'b0001_xxxx : Y[2:0] = 3'b100;
-					8'b0000_1xxx : Y[2:0] = 3'b011;
-					8'b0000_01xx : Y[2:0] = 3'b010;
-					8'b0000_001x : Y[2:0] = 3'b001;
-					8'b0000_0001 : Y[2:0] = 3'b000;
-					default 
-						begin
-							GS = 0;
-							EO = 1;
-							Y[2:0] = 3'b000;
-						end
-				endcase
-			end
-	end
+                GS = 0;
+                EO = 0;
+            end
+        else
+            begin
+                GS = 1;
+                EO = 0;
+                casex(I[7:0])
+                    8'b1xxx_xxxx : Y[2:0] = 3'b111;
+                    8'b01xx_xxxx : Y[2:0] = 3'b110;
+                    8'b001x_xxxx : Y[2:0] = 3'b101;
+                    8'b0001_xxxx : Y[2:0] = 3'b100;
+                    8'b0000_1xxx : Y[2:0] = 3'b011;
+                    8'b0000_01xx : Y[2:0] = 3'b010;
+                    8'b0000_001x : Y[2:0] = 3'b001;
+                    8'b0000_0001 : Y[2:0] = 3'b000;
+                    default 
+                        begin
+                            GS = 0;
+                            EO = 1;
+                            Y[2:0] = 3'b000;
+                        end
+                endcase
+            end
+    end
 endmodule
-			
 ```
 
 Cd4532_tb.v:
@@ -89,26 +88,26 @@ initial $monitor($time,":tI = %b,EI = %b,EO = %b,GS =
 %b,Y = %b\n",I,EI,EO,GS,Y);
 
 initial
-	begin
+    begin
 //使能信号无效
-		EI = 0;
-		I=8'b1111_1111;      
-		#10
-		EI = 0; 
-		I=8'b0111_1111;
-		#10
+        EI = 0;
+        I=8'b1111_1111;      
+        #10
+        EI = 0; 
+        I=8'b0111_1111;
+        #10
 //使能信号有效
-		EI = 1;
-		I=8'b1111_1111;
-		#10
-		EI = 1;
-		I=8'b0111_1111;
-		#10
-		EI = 1;
-		I=8'b0001_1111;
+        EI = 1;
+        I=8'b1111_1111;
+        #10
+        EI = 1;
+        I=8'b0111_1111;
+        #10
+        EI = 1;
+        I=8'b0001_1111;
 //停止仿真
-		$stop;            
-	end
+        $stop;            
+    end
 endmodule
 ```
 
@@ -116,4 +115,111 @@ endmodule
 
 <img src="https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/CD4532%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png" title="" alt="" width="500">
 
+### 74X138
 
+### 74HC4511
+
+_74HC4511.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/23
+*/
+
+// 74HCT4511 is a BCD to 7-segment latch/decoder/driver
+
+module _74HC4511(LE,BL,LT,D,Q);
+input LE,BL,LT;
+input [3:0] D;
+output reg [6:0] Q;
+
+always @(*)
+    begin
+        if (LE == 0 && !BL == 1 && !LT == 1)
+            begin
+                casex(D[3:0])
+                    4'b0000 : Q = 7'b1111_110;
+                    4'b0001 : Q = 7'b0110_000;
+                    4'b0010 : Q = 7'b1101_101;
+                    4'b0011 : Q = 7'b1111_001;
+                    4'b0100 : Q = 7'b0110_011;
+                    4'b0101 : Q = 7'b1011_011;
+                    4'b0110 : Q = 7'b0011_111;
+                    4'b0111 : Q = 7'b1110_000;
+                    4'b1000 : Q = 7'b1111_111;
+                    4'b1001 : Q = 7'b1111_011;
+                    default : Q = 7'b0000_000;
+                endcase
+            end
+        else if (!LT == 0)
+            Q = 7'b1111_111;
+        else if (!BL == 0 && !LT == 1)
+            Q = 7'b0000_000;
+        else
+            Q <= Q;
+    end
+endmodule
+```
+
+_74HC4511_tb.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/24
+*/
+
+`timescale 1ns/1ns
+
+module _74HC4511_tb;
+
+reg [3:0] D;
+reg LE,BL,LT;
+wire [6:0] Q;
+
+_74HC4511 U0(LE,BL,LT,D,Q);
+
+initial $monitor($time,"D = %b,Q = %b,LE = %b,BL = %b,LT = %b",D,Q,LE,BL,LT);
+
+initial
+    begin
+// 74HC4511 on test
+        LE = 1;
+        BL = 0;
+        LT = 1;
+        D = 4'b1101;
+        #10
+// 74HC4511 turn off
+        LE = 0;
+        BL = 1;
+        LT = 0;
+        D = 4'b1011;
+        #10
+// 74HC4511 turn on
+        LE = 0;
+        BL = 0;
+        LT = 0;
+        D = 4'b0000;
+        #10
+        D = 4'b1001;
+        #10
+        D = 4'b0110;
+        #10
+        D = 4'b1010;
+        #10
+// 74HC4511 latched
+        LE = 1;
+        BL = 0;
+        LT = 0;
+        #15
+        $stop;
+    end
+endmodule
+```
+
+测试波形如下：
+
+<img src="https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC4511%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png" title="" alt="" width="500">
