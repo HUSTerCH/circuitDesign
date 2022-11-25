@@ -10,7 +10,7 @@
 
 ### CD4532
 
-CD4532.v：
+#### CD4532.v：
 
 ```verilog
 /*
@@ -66,7 +66,7 @@ always @(*)
 endmodule
 ```
 
-Cd4532_tb.v:
+#### Cd4532_tb.v:
 
 ```verilog
 /*
@@ -111,13 +111,13 @@ initial
 endmodule
 ```
 
-测试波形如下：
+#### 测试波形
 
 <img src="https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/CD4532%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png" title="" alt="" width="500">
 
 ### 74X138
 
-74X138.v
+#### 74X138.v
 
 ```verilog
 /*
@@ -154,7 +154,7 @@ always @(*)
 endmodule
 ```
 
-74X138_tb.v:
+#### 74X138_tb.v:
 
 ```verilog
 /*
@@ -205,13 +205,13 @@ initial
 endmodule
 ```
 
-测试波形如下：
+#### 测试波形
 
 ![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74X138%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ### 74HC4511
 
-_74HC4511.v
+#### _74HC4511.v
 
 ```verilog
 /*
@@ -255,7 +255,7 @@ always @(*)
 endmodule
 ```
 
-_74HC4511_tb.v
+#### _74HC4511_tb.v
 
 ```verilog
 /*
@@ -312,13 +312,13 @@ initial
 endmodule
 ```
 
-测试波形如下：
+#### 测试波形
 
 <img src="https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC4511%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png" title="" alt="" width="500">
 
 ### 74HC151
 
-_74HC151.v
+#### _74HC151.v
 
 ```verilog
 /*
@@ -357,7 +357,7 @@ always @(*)
 endmodule
 ```
 
-__74HC151_tb.v
+#### _74HC151_tb.v
 
 ```verilog
 /*
@@ -409,8 +409,218 @@ initial
 endmodule
 ```
 
-测试波形：
+#### 测试波形
 
 ![Base/74HC151测试波形.png at master · HUSTerCH/Base · GitHub](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC151%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ### 74HC85
+
+#### _74HC85.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/25
+*/
+
+module _74HC85(A,B,I_g,I_s,I_e,F_g,F_s,F_e);
+// A, B are the signals we need to compare
+input [3:0] A,B;
+/*
+I_g means I_greater(A>B), I_s means I_smaller(A<B), I_e means I_equal(A==B).
+They're used for cascading
+*/
+input I_g,I_s,I_e;
+// F are similar with I
+output reg F_g,F_s,F_e;
+
+always @(*)
+    begin
+// compare highest bit
+        if (A[3] > B[3])
+            begin
+                F_g = 1;
+                F_s = 0;
+                F_e = 0;
+            end
+        else if (A[3] < B[3])
+            begin
+                F_g = 0;
+                F_s = 1;
+                F_e = 0;
+            end
+        else
+// compare 2nd bit
+            if (A[2] > B[2])
+                begin
+                    F_g = 1;
+                    F_s = 0;
+                    F_e = 0;
+                end
+            else if (A[2] < B[2])
+                begin
+                    F_g = 0;
+                    F_s = 1;
+                    F_e = 0;
+                end
+            else
+// compare 3rd bit
+                if (A[1] > B[1])
+                    begin
+                        F_g = 1;
+                        F_s = 0;
+                        F_e = 0;
+                    end
+                else if (A[1] < B[1])
+                    begin
+                        F_g = 0;
+                        F_s = 1;
+                        F_e = 0;
+                    end
+                else
+// compare lowest bit
+                    if (A[0] > B[0])
+                        begin
+                            F_g = 1;
+                            F_s = 0;
+                            F_e = 0;
+                        end
+                    else if (A[0] < B[0])
+                        begin
+                            F_g = 0;
+                            F_s = 1;
+                            F_e = 0;
+                        end
+                    else
+// 4 bits are all the same, compare input I
+                        if (I_e == 1)
+// I_e 
+                            begin
+                                F_g = 0;
+                                F_s = 0;
+                                F_e = 1;
+                            end
+// I_g valid
+                        else if (I_g == 1 && I_s == 0)
+                            begin
+                                F_g = 1;
+                                F_s = 0;
+                                F_e = 0;
+                            end
+// I_s valid
+                        else if (I_g == 0 && I_s == 1)
+                            begin
+                                F_g = 0;
+                                F_s = 1;
+                                F_e = 0;
+                            end
+// invalid I input
+                        else if (I_g == I_s)
+                            begin
+                                F_g = ~I_g;
+                                F_s = ~I_s;
+                                F_e = 0;
+                            end
+
+    end
+endmodule            
+```
+
+#### _74HC85_tb.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/25
+*/
+
+`timescale 1ns/1ns
+
+module _74HC85_tb;
+
+reg [3:0] A,B;
+reg I_g,I_s,I_e;
+
+wire F_g,F_s,F_e;
+
+_74HC85 U0(A,B,I_g,I_s,I_e,F_g,F_s,F_e);
+
+initial $monitor($time,"A = %b,B = %b,I_g = %b,I_s = %b,I_e = %b,F_g = %b,F_s = %b,F_e = %b",A,B,I_g,I_s,I_e,F_g,F_s,F_e);
+
+initial
+    begin
+// I invalid
+        A = 4'b1000; 
+        B = 4'b0100;
+          #10
+           A = 4'b0100;
+        B = 4'b1000;
+        #10
+        A = 4'b0110;
+        B = 4'b0111;
+        #10
+// I valid(A == B)
+        A = 4'b1101;
+        B = 4'b1101;
+        I_g = 0;
+        I_s = 0;
+        I_e = 1;
+        #10
+        A = 4'b1001;
+        B = 4'b1001;
+        I_g = 1;
+        I_s = 0;
+        I_e = 0;
+        #10
+        A = 4'b0001;
+        B = 4'b0001;
+        I_g = 0;
+        I_s = 1;
+        I_e = 0;
+        #10
+        A = 4'b1010;
+        B = 4'b1010;
+        I_g = 1;
+        I_s = 1;
+        I_e = 0;
+    end
+endmodule
+```
+
+#### 测试波形
+
+![Base/74HC85测试波形.png at master · HUSTerCH/Base · GitHub](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC85%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
+
+### 74HC238
+
+#### _74HC238.v
+
+#### _74HC238_tb.v
+
+#### 测试波形
+
+### 74HC194
+
+#### _74HC194.v
+
+#### _74HC194_tb.v
+
+#### 测试波形
+
+### 74LVC161
+
+#### _74LVC161.v
+
+#### _74LVC161_tb.v
+
+#### 测试波形
+
+## 扩展功能
+
+### 74X139和74X138构建5-32译码器
+
+### 两片74LS151连接成一个16选1数据选择器
+
+### 篮球24秒计时器
