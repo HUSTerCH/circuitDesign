@@ -113,7 +113,7 @@ endmodule
 
 #### 测试波形
 
-<img src="https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/CD4532%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png" title="" alt="" width="500">
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/CD4532%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ### 74X138
 
@@ -314,7 +314,7 @@ endmodule
 
 #### 测试波形
 
-<img src="https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC4511%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png" title="" alt="" width="500">
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC4511%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ### 74HC151
 
@@ -411,7 +411,7 @@ endmodule
 
 #### 测试波形
 
-![Base/74HC151测试波形.png at master · HUSTerCH/Base · GitHub](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC151%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC151%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ### 74HC85
 
@@ -591,31 +591,376 @@ endmodule
 
 #### 测试波形
 
-![Base/74HC85测试波形.png at master · HUSTerCH/Base · GitHub](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC85%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC85%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
-### 74HC238
+### 74HC283
 
-#### _74HC238.v
+#### _74HC283.v
 
-#### _74HC238_tb.v
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/26
+*/
+
+module _74HC283(C_IN,A,B,C_OUT,S);
+input C_IN;
+input [3:0] A,B;
+output reg C_OUT;
+output reg [3:0] S;
+
+wire [3:0] X,Y,C;
+
+assign X = A ^ B;
+assign Y = A & B;
+assign C[0] = Y[0] | (X[0] & C_IN);
+
+genvar i;
+for (i = 1;i < 4;i = i + 1)
+    assign C[i] = Y[i] | (X[i] & C[i - 1]);
+assign C_OUT = C[3];
+
+assign S[0] = X[0] ^ C_IN;
+for (i = 1;i < 4;i = i + 1)
+    assign S[i] = X[i] ^ C[i -1];
+endmodule
+```
+
+#### _74HC283_tb.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/26
+*/
+
+`timescale 1ns/1ns
+module _74HC283_tb;
+
+reg C_IN;
+reg [3:0] A,B;
+wire C_OUT;
+wire [3:0] S;
+
+_74HC283 U0(C_IN,A,B,C_OUT,S);
+
+initial $monitor($time,"C_IN = %b,A = %b,B = %b,C_OUT = %b,S = %b,",C_IN,A,B,C_OUT,S);
+
+initial
+    begin
+// C_IN = 0
+        C_IN = 0;
+        A = 4'b1101;
+        B = 4'b0011;
+        #5
+        C_IN = 0;
+        A = 4'b0000;
+        B = 4'b0000;
+        #5
+        C_IN = 0;
+        A = 4'b1111;
+        B = 4'b1111;
+        #5
+// C_IN = 1
+        C_IN = 1;
+        A = 4'b1011;
+        B = 4'b0011;
+        #5
+        C_IN = 1;
+        A = 4'b0000;
+        B = 4'b0000;
+        #5
+// egde test
+        C_IN = 1;
+        A = 4'b1111;
+        B = 4'b1111;
+        #5
+        $stop;
+    end
+endmodule
+```
 
 #### 测试波形
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC283%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ### 74HC194
 
 #### _74HC194.v
 
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/26
+*/
+
+module _74HC194(CR,CP,D_SR,D_SL,S,D_I,Q);
+/*
+CR: asyn clear
+CP: clock signal
+D_SR: right shift serial data input
+D_SL: left shift serial data input
+D_I: parallel data input
+
+S: control signal,
+when S == 00,output stays;
+     S == 01,output right shift; 
+     S == 10,output left shift;
+     S == 11,sync parallel transponse
+
+Q: output signal
+
+sensitive signal: CP's rising edge or CR's droping edge
+*/
+input CR,CP,D_SR,D_SL;
+input [1:0] S;
+input [3:0] D_I;
+output reg [3:0] Q;
+
+always @(posedge CP or negedge CR)
+    begin
+        if (CR == 1) Q <= 4'b0000;
+        else
+            casex (S[1:0])
+                2'b00 : Q <= Q;
+                2'b01 : Q <= {Q[2:0],D_SR};
+                2'b10 : Q <= {D_SL,Q[3:1]};
+                2'b11 : Q <= D_I;
+            endcase
+    end
+endmodule        
+```
+
 #### _74HC194_tb.v
 
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/26
+*/
+
+`timescale 1ns/1ns
+
+module _74HC194_tb;
+reg CR,CP,D_SR,D_SL;
+reg [1:0] S;
+reg [3:0] D_I;
+wire [3:0] Q;
+
+_74HC194 U0(CR,CP,D_SR,D_SL,S,D_I,Q);
+
+initial $monitor($time,"D_SR = %b,D_SL = %b,S = %b,D = %b,Q = %b",D_SR,D_SL,S,D_I,Q);
+
+initial
+    CP = 0;
+    always #5 CP = ~CP;
+
+initial
+    begin
+// clear
+        CR = 1;
+        S = 2'b11;
+        D_I = 4'b1001;
+        D_SR = 1;
+        D_SL = 0;
+        #20
+// set as 1111
+        CR = 0;
+        S = 2'b11;
+        D_I = 4'b1111;
+        D_SR = 0;
+        D_SL = 0;
+        #20
+// right shift
+        CR = 0;
+        S = 2'b01;
+        D_I = 4'b1111;
+        D_SR = 0;
+        D_SL = 1;
+        #20
+// right shift again
+        CR = 0;
+        S = 2'b01;
+        D_I = 4'b1111;
+        D_SR = 1;
+        D_SL = 0;
+        #20
+// clear
+        CR = 1;
+        S = 2'b11;
+        D_I = 4'b1001;
+        D_SR = 1;
+        D_SL = 0;
+        #20
+// set as 0000
+        CR = 0;
+        S = 2'b11;
+        D_I = 4'b0000;
+        D_SR = 0;
+        D_SL = 1;
+        #20
+// left shift
+        CR = 0;
+        S = 2'b10;
+        D_I = 4'b0000;
+        D_SR = 0;
+        D_SL = 1;
+        #20
+// left shift again
+        CR = 0;
+        S = 2'b10;
+        D_I = 4'b1111;
+        D_SR = 1;
+        D_SL = 0;
+        #20
+// stay
+        CR = 0;
+        S = 2'b00;
+        D_I = 4'b0000;
+        D_SR = 1;
+        D_SL = 1;
+        #20
+        $stop;
+    end
+
+endmodule
+```
+
 #### 测试波形
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74HC194%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ### 74LVC161
 
 #### _74LVC161.v
 
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/26
+*/
+
+module _74LVC161(CR,PE,CEP,CET,CP,D,Q,TC);
+/*
+CR: clear
+PE: preset
+CEP,CET: enabled terminal
+D: preset data
+Q: output
+TC: carry bit
+*/
+input CR,PE,CEP,CET,CP;
+input [3:0] D;
+output reg [3:0] Q;
+output reg TC;
+
+always @(posedge CP or negedge CR)
+    begin
+        if (!CR == 0) 
+            begin
+                Q = 4'b0000;
+                TC = 0;
+            end
+        else
+            if (!PE == 0) Q <= D;
+            else
+                casex({CEP,CET})
+                    2'b0x : Q <= Q;
+                    2'bx0 :
+                        begin
+                            Q <= Q;
+                            TC = 0;
+                        end
+                    2'b11 :
+                        begin
+                            Q = Q + 1;
+                            TC = (Q == 4'b1111);
+                        end
+                endcase
+    end
+endmodule
+```
+
 #### _74LVC161_tb.v
 
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/26
+*/
+
+`timescale 1ns/1ns
+
+module _74LVC161_tb;
+
+reg CR,PE,CEP,CET,CP;
+reg [3:0] D;
+wire [3:0] Q;
+wire TC;
+
+_74LVC161 U0(CR,PE,CEP,CET,CP,D,Q,TC);
+
+initial $monitor($time,"CR = %b,PE = %b,CEP = %b,CET = %b,D = %b,Q = %b,TC = %b",CR,PE,CEP,CET,CP,D,Q,TC);
+
+initial
+    CP = 0;
+    always #5 CP = ~CP;
+initial
+    begin
+//clear
+         CR = 1;
+        PE = 1;
+        CEP = 0;
+        CET = 1;
+        D = 4'b1101;
+        #20
+// preset as 1001
+        CR = 0;
+        PE = 1;
+        CEP = 1;
+        CET = 1;
+        D = 4'b1001;
+        #20
+// count
+        CR = 0;
+        PE = 0;
+        CEP = 1;
+        CET = 1;
+        D = 4'b0000;
+        #50
+// stay
+        CR = 0;
+        PE = 0;
+        CEP = 1;
+        CET = 0;
+        #10
+// count
+        CR = 0;
+        PE = 0;
+        CEP = 1;
+        CET = 1;
+        D = 4'b0000;
+        #10
+//stay and carry bit
+        CR = 0;
+        PE = 0;
+        CEP = 0;
+        CET = 1;
+        #15
+        $stop;
+    end
+endmodule
+```
+
 #### 测试波形
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74LVC161%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ## 扩展功能
 
