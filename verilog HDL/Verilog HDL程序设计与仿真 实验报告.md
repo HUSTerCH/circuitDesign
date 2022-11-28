@@ -1,33 +1,3 @@
-`timescale 1ns/1ns
-module _5_32_decoder_tb;
-
-reg E;
-reg [4:0] A;
-wire [31:0] Y;
-
-_5_32_decoder U_5_32(E,A,Y);
-
-initial $monitor($time,"E = %b,A = %b,Y = %b",E,A,Y);
-
-always #2 A = A + 1'b1;
-
-initial
-    begin
-        E = 0;
-        #2
-        A = 5'b0000_0;
-        E = 1;
-        #60
-        $stop;
-    end
-endmodule
-
-##### 5-32_decoder_tb.v
-
-
-
-
-
 # Verilog HDL程序设计与仿真 实验报告
 
 专业班级：**通信2101班**
