@@ -1,3 +1,33 @@
+`timescale 1ns/1ns
+module _5_32_decoder_tb;
+
+reg E;
+reg [4:0] A;
+wire [31:0] Y;
+
+_5_32_decoder U_5_32(E,A,Y);
+
+initial $monitor($time,"E = %b,A = %b,Y = %b",E,A,Y);
+
+always #2 A = A + 1'b1;
+
+initial
+    begin
+        E = 0;
+        #2
+        A = 5'b0000_0;
+        E = 1;
+        #60
+        $stop;
+    end
+endmodule
+
+##### 5-32_decoder_tb.v
+
+
+
+
+
 # Verilog HDL程序设计与仿真 实验报告
 
 专业班级：**通信2101班**
@@ -962,10 +992,145 @@ endmodule
 
 ![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/74LVC161%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
+### 74X139(for 5-32 decoder)
+
+#### _74X139.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/28
+*/
+
+// the module will just build half of the 74X139
+
+module _74X139(E,A,Y);
+
+input E;
+input [1:0] A;
+output reg [3:0] Y;
+
+always @(*)
+	begin
+		if (!E == 0)
+			Y = 4'b1111;
+		else
+			begin
+				casex(A[1:0])
+					2'b00 : Y = 4'b1110;
+					2'b01 : Y = 4'b1101;
+					2'b10 : Y = 4'b1011;
+					2'b11 : Y = 4'b0111;
+				endcase
+			end
+	end
+endmodule
+```
+
 ## 扩展功能
 
 ### 74X139和74X138构建5-32译码器
 
+#### 电路搭建思路
+
+    74X139芯片包含两个独立的2-4线译码器，74X138为3-8线译码器，要将其组成5-32线译码器，需要32个输出端和5个输入端，将输入信号分为两个部分：两个高位和三个低位，将两个高位输出74X139，利用其编码特性，分别选择让剩下的三个低位进入哪个74X138进行输出。该电路包含两级输入输出，1/2 74X139位第一级，4个74X138为第二级。
+
+#### 代码&测试用例
+
+##### _5_32_decoder.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/28
+*/
+
+/*
+In this module, we'll use 1/2 74X139 and 4 74X138s to build a 5-32 decoder.
+To make this decoder work properly, we'll divide the 5 bits input signal into 2 parts:
+[4,3] and [2:0]. [4:3] will be put into the 1/2 74X139,it will decide which 74X138 we 
+will use to decode the [2:0] input.
+*/
+
+module _5_32_decoder(E,A,L);
+
+input E;// enbaled signal for all the CMOSs
+input [4:0] A;
+output reg [31:0] L;
+
+wire [1:0] A_139; // input for 1/2 74X139
+wire [2:0] A_138; // input for 4 74X138s
+
+wire [3:0] Y_139; // output for 1/2 74X139
+// output for 4 74X138s
+wire [7:0] Y_138_0;
+wire [7:0] Y_138_1;
+wire [7:0] Y_138_2;
+wire [7:0] Y_138_3;
+
+wire E2;// enabled signal for 4 74X138s
+
+assign E2 = 0;
+
+assign A_139[1] = A[4];
+assign A_139[0] = A[3];
+assign A_138[2] = A[2];
+assign A_138[1] = A[1];
+assign A_138[0] = A[0];
+
+_74X139 U_139(!E,A_139,Y_139);
+_74X138 U_138_0(Y_139[0],E2,E,A_138,Y_138_0);
+_74X138 U_138_1(Y_139[1],E2,E,A_138,Y_138_1);
+_74X138 U_138_2(Y_139[2],E2,E,A_138,Y_138_2);
+_74X138 U_138_3(Y_139[3],E2,E,A_138,Y_138_3);
+
+
+assign L = {Y_138_3[7:0],Y_138_2[7:0],Y_138_1[7:0],Y_138_0[7:0]};
+endmodule
+```
+
+##### 5-32_decoder_tb.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/28
+*/
+
+`timescale 1ns/1ns
+module _5_32_decoder_tb;
+
+reg E;
+reg [4:0] A;
+wire [31:0] Y;
+
+_5_32_decoder U_5_32(E,A,Y);
+
+initial $monitor($time,"E = %b,A = %b,Y = %b",E,A,Y);
+
+always #2 A = A + 1'b1;
+
+initial
+	begin
+		E = 0;
+		#2
+		A = 5'b0000_0;
+		E = 1;
+		#60
+		$stop;
+	end
+endmodule
+```
+
+##### 测试波形
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/5-32%E8%AF%91%E7%A0%81%E5%99%A8%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
+
 ### 两片74LS151连接成一个16选1数据选择器
+
+
 
 ### 篮球24秒计时器
