@@ -10,7 +10,7 @@
 
 ### CD4532
 
-#### CD4532.v：
+#### CD4532.v
 
 ```verilog
 /*
@@ -20,13 +20,7 @@
 */
 
 module CD4532(EI,I,Y,GS,EO);
-/*
-输入端口：EI使能信号，I为输入的数。
-输出端口：Y为对应的二进制数。
-GS,EO用于多片的级联：
-当输入信号存在有效信号，GS=1,EO=0；
-当输入信号全部无效时，GS=0,EO=1；??????;
-*/
+
 input EI;
 input [7:0] I;
 output reg [2:0] Y;
@@ -66,7 +60,7 @@ always @(*)
 endmodule
 ```
 
-#### Cd4532_tb.v:
+#### Cd4532_tb.v
 
 ```verilog
 /*
@@ -89,14 +83,14 @@ initial $monitor($time,":tI = %b,EI = %b,EO = %b,GS =
 
 initial
     begin
-//使能信号无效
+//enabled terminal invalid
         EI = 0;
         I=8'b1111_1111;      
         #10
         EI = 0; 
         I=8'b0111_1111;
         #10
-//使能信号有效
+//enabled terminal valid
         EI = 1;
         I=8'b1111_1111;
         #10
@@ -105,7 +99,7 @@ initial
         #10
         EI = 1;
         I=8'b0001_1111;
-//停止仿真
+
         $stop;            
     end
 endmodule
@@ -154,7 +148,7 @@ always @(*)
 endmodule
 ```
 
-#### 74X138_tb.v:
+#### 74X138_tb.v
 
 ```verilog
 /*
@@ -982,19 +976,19 @@ input [1:0] A;
 output reg [3:0] Y;
 
 always @(*)
-	begin
-		if (!E == 0)
-			Y = 4'b1111;
-		else
-			begin
-				casex(A[1:0])
-					2'b00 : Y = 4'b1110;
-					2'b01 : Y = 4'b1101;
-					2'b10 : Y = 4'b1011;
-					2'b11 : Y = 4'b0111;
-				endcase
-			end
-	end
+    begin
+        if (!E == 0)
+            Y = 4'b1111;
+        else
+            begin
+                casex(A[1:0])
+                    2'b00 : Y = 4'b1110;
+                    2'b01 : Y = 4'b1101;
+                    2'b10 : Y = 4'b1011;
+                    2'b11 : Y = 4'b0111;
+                endcase
+            end
+    end
 endmodule
 ```
 
@@ -1084,14 +1078,14 @@ initial $monitor($time,"E = %b,A = %b,Y = %b",E,A,Y);
 always #2 A = A + 1'b1;
 
 initial
-	begin
-		E = 0;
-		#2
-		A = 5'b0000_0;
-		E = 1;
-		#60
-		$stop;
-	end
+    begin
+        E = 0;
+        #2
+        A = 5'b0000_0;
+        E = 1;
+        #60
+        $stop;
+    end
 endmodule
 ```
 
@@ -1101,6 +1095,247 @@ endmodule
 
 ### 两片74LS151连接成一个16选1数据选择器
 
+#### 电路搭建思路
 
+    74HC/LS151搭载了一个8选1数据选择器，16选1数据选择器需要4位的选择输入信号和16位的输入数据信号，对于四位的输入信号，我们可以将最高位作为决定两个芯片哪个工作的信号，剩余三位输入选择信号作为正常的输入信号输入到芯片中。最后的输出信号，则由两个芯片的两个输出信号共同决定。
+
+#### 代码&测试用例
+
+##### _16_1_selector.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/30
+*/
+
+/*
+In this module we'll use two 74HC151s to build a 16 Select 1 Data selector.
+For the selecting signal S[3:0], S[3] will deciding which 74HC151 to work,
+S[2:0] will work on both 74HC151, but with the effection of S[3], 
+there will always only one 74HC151 on work while another off work.
+*/
+
+module _16_1_selector(D,S,Y,Y_);
+input [15:0] D;
+input [3:0] S;
+
+output reg Y,Y_;
+
+wire [7:0] D_low;
+wire [7:0] D_high;
+wire [2:0] S_low;
+wire Y_0,Y_1;
+wire Y_0_,Y_1_;
+
+genvar i;
+for (i = 0;i < 8;i = i + 1)
+    begin
+        assign D_low[i] = D[i];
+        assign D_high[i] = D[i + 8];
+    end
+for (i = 0;i < 3;i = i + 1)
+    assign S_low[i] = S[i];
+
+_74HC151 U0(D_low,S_low,!S[3],Y_0,Y_0_);
+_74HC151 U1(D_high,S_low,S[3],Y_1,Y_1_);
+
+assign Y = Y_0 | Y_1;
+assign Y_ = Y_0_ & Y_1_;
+endmodule
+```
+
+##### _16_1_selector_tb.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/11/30
+*/
+
+`timescale 1ns/1ns
+
+module _16_1_selector_tb;
+
+reg [15:0] D;
+reg [3:0] S;
+wire Y,Y_;
+
+_16_1_selector U(D,S,Y,Y_);
+
+initial $monitor($time,"D = %b,S = %b,Y = %b,Y_ = %b,",D,S,Y,Y_);
+
+initial
+    begin
+        #5
+        D = 16'b0000_0000_0000_0001;
+        S = 4'b0000;
+        #5
+        D = 16'b1111_1111_1110_1111;
+        S = 4'b0100;
+        #5
+        D = 16'b1101_1111_1111_1111;
+        S = 4'b1101;
+        #5
+        D = 16'b1000_0000_0000_0000;
+        S = 4'b1111;
+        #5
+        $stop;
+    end
+endmodule
+```
+
+##### 测试波形
+
+![Base/16-1数据选择器测试波形.png at master · HUSTerCH/Base · GitHub](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/16-1%E6%95%B0%E6%8D%AE%E9%80%89%E6%8B%A9%E5%99%A8%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A2.png)
 
 ### 篮球24秒计时器
+
+#### 详细说明
+
+- 设计一个24秒倒计时电路，要求定时电路递减计时，每个时钟，定时电路减1；
+
+- 当计时电路递减计时到零(即定时时间到)时，电路停止计数；
+
+- 设置操作开关控制计时器的启动、暂停和复位功能。不限同步或异步
+
+#### 电路搭建思路
+
+    通过行为级建模搭建24秒计时器，输出结果作为_74HC4511的输入，将其转化为可以在共阴显示器上显示的信号
+
+#### 代码&测试用例
+
+##### bitOne.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/12/23
+*/
+module bitOne(CP,CLR,EN,PE,D,Q,carryOut);
+    parameter n = 4,MOD = 10;
+    input CP,CLR,EN,PE;
+    input [n-1:0] D;
+    output reg[n-1:0] Q;
+    output carryOut;
+/*
+input
+CP: clock signal
+CLR: clear signal
+EN: enabled terminal
+PE: preset signal
+D: preset inpput
+output
+Q: 4 bits binary number
+carry_out: carry bit signal
+*/
+    always@(posedge CP or negedge CLR)
+            begin
+                if(!CLR)    Q <= 'd0;
+                else if(!EN)    Q <= Q;
+                else 
+                    begin
+                        if(Q == 4'b0000)    Q <= MOD-1;
+                        else        Q <= Q-1;
+                    end
+            end
+    always@(posedge PE)
+        begin
+            Q <= D;
+        end
+    assign carryOut = (Q == 4'b0000);
+endmodule
+```
+
+##### counter.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/12/24
+*/
+module counter(CP,EN,PE,Q1,Q0,show_Q0,show_Q1);
+    input CP,EN,PE;
+    output [3:0] Q1,Q0;
+    output [6:0] show_Q0,show_Q1;
+    wire carry_out;
+    wire carry_out1;
+    wire CP1;
+    wire EN1;
+
+    assign CP1 = ~carry_out;
+    assign EN1 = EN & ~(carry_out & carry_out1);
+
+    bitOne U1(CP1,1'b1,EN1,PE,4'b0011,Q1,carry_out1);
+    bitOne U0(CP,1'b1,EN1,PE,4'b0100,Q0,carry_out);
+
+    _74HC4511 U_show0(0,0,0,Q0,show_Q0);
+    _74HC4511 U_show1(0,0,0,Q1,show_Q1);
+endmodule
+```
+
+##### counter_tb.v
+
+```verilog
+/*
+@author Luo Chang
+@UID U202113940
+@date 2022/12/25
+*/
+
+`timescale 100ms/10ms
+module counter_tb;
+    reg CP;
+    reg EN;
+    reg PE;
+    wire [3:0] Q0,Q1;
+    wire [6:0] show_Q0,show_Q1;
+
+    counter U(CP,EN,PE,Q1,Q0,show_Q0,show_Q1);
+
+    initial $monitor($time,"tQ1 = %b,Q0 = %b\n",Q1,Q0);
+
+    initial
+        CP = 1;
+    always
+        #5 CP = ~CP;
+    initial
+        begin
+            EN = 1;
+            PE = 0;
+            #10
+
+            EN = 1;
+            PE = 1;
+            #10
+
+
+            EN = 1;
+            PE = 0;
+            #300
+
+            EN = 1;
+            PE = 1;
+            #10
+
+
+            EN = 1;
+            PE = 0;
+            #20
+
+            EN = 0;
+            PE = 0;
+            #20
+            $stop;
+        end
+endmodule
+```
+
+##### 测试波形
+
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/counter_%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A21.png)
+![](https://github.com/HUSTerCH/Base/raw/master/circuitDesign/verilog%20HDL/counter_%E6%B5%8B%E8%AF%95%E6%B3%A2%E5%BD%A22.png)
