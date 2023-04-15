@@ -347,8 +347,7 @@ module testbench;
     wire [7:0] Y;
 
     reg [2:0] A;
-    reg S1, S2, S3;
-
+    reg S1, S2, S3
     three_eight_decoder_behavior U0(A, S1, S2, S3, Y);
     initial $monitor($time,"A = %b,S1 = %b,S2 = %b,S3 = %b,Y = %b", A, S1, S2, S3, Y);
 
